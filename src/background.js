@@ -1,4 +1,4 @@
-var DELAY = 1;
+var DELAY = 5;
 
 chrome.alarms.onAlarm.addListener(onAlarm);
 chrome.runtime.onInstalled.addListener(initStorage);
