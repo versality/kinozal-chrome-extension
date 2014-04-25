@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Kinozal Ward",
+  "description": "Allows to receive notifications when new top movies released",
+  "version": "1.0",
+
+  "permissions": [
+    "storage",
+    "http://kinozal.tv/",
+    "background",
+    "alarms"
+  ],
+  "browser_action": {
+    "default_icon": "icons/icon.png",
+    "default_popup": "src/popup.html"
+  },
+
+  "background": {
+    "scripts": [
+      "lib/jquery-1.11.0.min.js", 
+      "lib/async.js",
+      "src/trackers/kinozal.js", 
+      "src/init.js", 
+      "src/parser.js", 
+      "src/background.js"
+    ],
+    "persistent": false
+  }
+}
