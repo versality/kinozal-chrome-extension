@@ -1,13 +1,16 @@
 function kinozal(callback) {
+    "use_strict";
+
     var movies = [];
     var trs;
+    var moviesInQueue = 0;
 
     $.get('http://kinozal.tv/browse.php?s=&g=0&c=0&v=0&d=0&w=0&t=1&f=0/', parse_trs);
 
     function parse_trs(data) {
         trs = $(data).find('.w100p > tbody > tr');
 
-        trs.each(function() {
+        trs.each(function(index) {
             $(this).each(function () {
                 var _time = $(this).children('.s:eq(2)').text();
 
@@ -28,13 +31,12 @@ function kinozal(callback) {
 
                 if (!name) return;
 
-                var moviesInQueue = 0;  // Wait until all IMDB rating were returned
-
                 // If Movie is not Russian
                 if (name.match(/\//g).length === 4) {
                     name = name.split(' / ')[1];  // Get English title
 
                     moviesInQueue += 1;
+
                     getImdbRating(name, function(rating) {
                         movies.push({
                             'name': name,
@@ -45,11 +47,11 @@ function kinozal(callback) {
                         });
 
                         moviesInQueue -= 1;
-                        if (moviesInQueue === 0) callback(movies);
+
+                        if (moviesInQueue === 0 && (trs.length) === index + 1) callback(movies);
                     });
                 } else {
                     name = name.split(' / ')[0];  // Get Russian title
-
                     movies.push({
                         'name': name,
                         'time': finalDate,
@@ -57,6 +59,8 @@ function kinozal(callback) {
                         'rating': {score: 'N/A', votes: 'N/A'},
                         'seen': false
                     });
+
+                    if (moviesInQueue === 0 && (trs.length) === index + 1) callback(movies);
                 }
             });
         });

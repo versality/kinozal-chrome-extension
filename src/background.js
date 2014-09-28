@@ -36,7 +36,7 @@ function updateCounter() {
 
 function initStorage() {
     //chrome.storage.local.clear();
-    //time_now = new Date('2014-04-01').getTime();
+    //time_now = new Date('1900-01-01').getTime();
 
     var time_now = new Date().getTime();
     chrome.storage.local.set({'timeJoined': time_now});
